@@ -1,0 +1,359 @@
+@model StudentManagementSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Add Student";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Add Student</h2>
+            <p class="text-muted mb-0">Add a new student to the system</p>
+        </div>
+
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Students
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger">
+                </div>
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label asp-for="Name" class="form-label fw-semibold">
+                            Student Name
+                        </label>
+                        <input asp-for="Name"
+                               class="form-control"
+                               placeholder="Enter student name" />
+                        <span asp-validation-for="Name"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label fw-semibold">
+                            Email Address
+                        </label>
+                        <input asp-for="Email"
+                               class="form-control"
+                               placeholder="Enter email address" />
+                        <span asp-validation-for="Email"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Phone" class="form-label fw-semibold">
+                            Phone
+                        </label>
+                        <input asp-for="Phone"
+                               class="form-control"
+                               placeholder="Enter phone number" />
+                        <span asp-validation-for="Phone"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Gender" class="form-label fw-semibold">
+                            Gender
+                        </label>
+                        <select asp-for="Gender" class="form-select">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="Gender"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="DateOfBirth"
+                               class="form-label fw-semibold">
+                            Date of Birth
+                        </label>
+                        <input asp-for="DateOfBirth"
+                               type="date"
+                               class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="EnrollmentDate"
+                               class="form-label fw-semibold">
+                            Enrollment Date
+                        </label>
+                        <input asp-for="EnrollmentDate"
+                               type="date"
+                               class="form-control" />
+                    </div>
+
+                    <!-- ACADEMIC INFORMATION -->
+
+                    <div class="col-12">
+                        <div class="border rounded-3 p-4">
+
+                            <h5 class="fw-bold mb-4">
+                                <i class="bi bi-mortarboard-fill me-2"></i>
+                                Academic Information
+                            </h5>
+
+                            <!-- COURSE -->
+
+                            <div class="mb-4">
+
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+
+                                    <label class="form-label fw-semibold mb-0">
+                                        Course
+                                    </label>
+
+                                    <button type="button"
+                                            id="showNewCourse"
+                                            class="btn btn-sm btn-outline-primary">
+
+                                        <i class="bi bi-plus-circle me-1"></i>
+                                        Add New Course
+
+                                    </button>
+
+                                </div>
+
+                                <!-- EXISTING COURSE -->
+
+                                <div id="existingCourseSection">
+
+                                    <select asp-for="CourseId"
+                                            asp-items="ViewBag.Courses"
+                                            class="form-select"
+                                            id="CourseId">
+
+                                        <option value="">
+                                            Select Course
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <!-- NEW COURSE -->
+
+                                <div id="newCourseSection"
+                                     style="display:none;">
+
+                                    <div class="row g-3">
+
+                                        <div class="col-md-5">
+
+                                            <label class="form-label fw-semibold">
+                                                Course Name
+                                            </label>
+
+                                            <input type="text"
+                                                   name="newCourseName"
+                                                   id="newCourseName"
+                                                   class="form-control"
+                                                   placeholder="e.g. Bachelor of Computer Applications" />
+
+                                        </div>
+
+                                        <div class="col-md-3">
+
+                                            <label class="form-label fw-semibold">
+                                                Course Code
+                                            </label>
+
+                                            <input type="text"
+                                                   name="newCourseCode"
+                                                   id="newCourseCode"
+                                                   class="form-control"
+                                                   placeholder="e.g. BCA101" />
+
+                                        </div>
+
+                                        <div class="col-md-4">
+
+                                            <label class="form-label fw-semibold">
+                                                Duration
+                                            </label>
+
+                                            <input type="text"
+                                                   name="newCourseDuration"
+                                                   id="newCourseDuration"
+                                                   class="form-control"
+                                                   placeholder="e.g. 3 Years" />
+
+                                        </div>
+
+                                    </div>
+
+                                    <button type="button"
+                                            id="useExistingCourse"
+                                            class="btn btn-sm btn-outline-secondary mt-3">
+
+                                        <i class="bi bi-arrow-left me-1"></i>
+                                        Select Existing Course
+
+                                    </button>
+
+                                </div>
+
+                                <span asp-validation-for="CourseId"
+                                      class="text-danger"></span>
+
+                            </div>
+
+                            <!-- DEPARTMENT -->
+
+                            <div>
+
+                                <label asp-for="DepartmentId"
+                                       class="form-label fw-semibold">
+                                    Department
+                                </label>
+
+                                <select asp-for="DepartmentId"
+                                        asp-items="ViewBag.Departments"
+                                        class="form-select"
+                                        id="DepartmentId">
+
+                                    <option value="">
+                                        Select Department
+                                    </option>
+
+                                </select>
+
+                                <span asp-validation-for="DepartmentId"
+                                      class="text-danger"></span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ADDRESS -->
+
+                    <div class="col-12">
+
+                        <label asp-for="Address"
+                               class="form-label fw-semibold">
+                            Address
+                        </label>
+
+                        <textarea asp-for="Address"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Enter student address"></textarea>
+
+                    </div>
+
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a asp-action="Index"
+                       class="btn btn-light border">
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary px-4">
+
+                        <i class="bi bi-check-circle me-2"></i>
+                        Save Student
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const showNewCourse =
+                document.getElementById("showNewCourse");
+
+            const useExistingCourse =
+                document.getElementById("useExistingCourse");
+
+            const existingCourseSection =
+                document.getElementById("existingCourseSection");
+
+            const newCourseSection =
+                document.getElementById("newCourseSection");
+
+            const courseSelect =
+                document.getElementById("CourseId");
+
+            const newCourseName =
+                document.getElementById("newCourseName");
+
+            const newCourseCode =
+                document.getElementById("newCourseCode");
+
+            const newCourseDuration =
+                document.getElementById("newCourseDuration");
+
+
+            showNewCourse.addEventListener("click", function () {
+
+                existingCourseSection.style.display = "none";
+
+                newCourseSection.style.display = "block";
+
+                courseSelect.value = "";
+
+                courseSelect.removeAttribute("required");
+
+                newCourseName.setAttribute("required", "required");
+
+                newCourseCode.setAttribute("required", "required");
+
+            });
+
+
+            useExistingCourse.addEventListener("click", function () {
+
+                newCourseSection.style.display = "none";
+
+                existingCourseSection.style.display = "block";
+
+                newCourseName.value = "";
+
+                newCourseCode.value = "";
+
+                newCourseDuration.value = "";
+
+                newCourseName.removeAttribute("required");
+
+                newCourseCode.removeAttribute("required");
+
+            });
+
+        });
+
+    </script>
+}
+

@@ -1,0 +1,389 @@
+@model IEnumerable<StudentManagementSystem.Models.Department>
+
+@{
+    ViewData["Title"] = "Departments";
+}
+
+<div class="container-fluid">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold mb-1">
+                <i class="bi bi-building-fill me-2"></i>
+                Departments
+            </h1>
+
+            <p class="text-muted mb-0">
+                Manage academic departments and their information.
+            </p>
+        </div>
+
+        <a asp-action="Create"
+           class="btn btn-primary px-4">
+
+            <i class="bi bi-plus-circle me-2"></i>
+            Add Department
+
+        </a>
+
+    </div>
+
+
+    <!-- SUMMARY CARDS -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body d-flex align-items-center gap-3">
+
+                    <div class="rounded-3 bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center"
+                         style="width:52px;height:52px;">
+
+                        <i class="bi bi-building-fill fs-4"></i>
+
+                    </div>
+
+                    <div>
+
+                        <small class="text-muted">
+                            Total Departments
+                        </small>
+
+                        <h3 class="fw-bold mb-0">
+                            @Model.Count()
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body d-flex align-items-center gap-3">
+
+                    <div class="rounded-3 bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center"
+                         style="width:52px;height:52px;">
+
+                        <i class="bi bi-check-circle-fill fs-4"></i>
+
+                    </div>
+
+                    <div>
+
+                        <small class="text-muted">
+                            Active Departments
+                        </small>
+
+                        <h3 class="fw-bold mb-0">
+                            @Model.Count(d => d.Status == "Active")
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body d-flex align-items-center gap-3">
+
+                    <div class="rounded-3 bg-warning bg-opacity-10 text-warning d-flex align-items-center justify-content-center"
+                         style="width:52px;height:52px;">
+
+                        <i class="bi bi-people-fill fs-4"></i>
+
+                    </div>
+
+                    <div>
+
+                        <small class="text-muted">
+                            Assigned Students
+                        </small>
+
+                        <h3 class="fw-bold mb-0">
+                            @Model.Sum(d => d.Students?.Count ?? 0)
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- DEPARTMENT TABLE -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white border-0 p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="fw-bold mb-1">
+                        Department Records
+                    </h5>
+
+                    <small class="text-muted">
+                        View and manage department information.
+                    </small>
+
+                </div>
+
+                <span class="badge bg-primary rounded-pill px-3 py-2">
+
+                    <i class="bi bi-building me-1"></i>
+
+                    @Model.Count() Departments
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        @if (Model.Any())
+        {
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th class="px-4">
+                                ID
+                            </th>
+
+                            <th>
+                                Department
+                            </th>
+
+                            <th>
+                                Code
+                            </th>
+
+                            <th>
+                                Head of Department
+                            </th>
+
+                            <th>
+                                Students
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th class="text-center">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @foreach (var department in Model)
+                        {
+                            <tr>
+
+                                <!-- ID -->
+                                <td class="px-4">
+
+                                    <span class="badge bg-light text-dark border">
+                                        #@department.DepartmentId
+                                    </span>
+
+                                </td>
+
+
+                                <!-- DEPARTMENT -->
+                                <td>
+
+                                    <div class="d-flex align-items-center gap-3">
+
+                                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                                             style="width:42px;height:42px;">
+
+                                            <i class="bi bi-building"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="fw-semibold">
+                                                @department.DepartmentName
+                                            </div>
+
+                                            <small class="text-muted">
+                                                @(string.IsNullOrWhiteSpace(department.Description)
+                                                    ? "No description"
+                                                    : department.Description)
+                                            </small>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- CODE -->
+                                <td>
+
+                                    <span class="badge bg-light text-dark border">
+                                        @department.DepartmentCode
+                                    </span>
+
+                                </td>
+
+
+                                <!-- HEAD -->
+                                <td>
+
+                                    <span>
+                                        @(string.IsNullOrWhiteSpace(department.HeadOfDepartment)
+                                            ? "Not assigned"
+                                            : department.HeadOfDepartment)
+                                    </span>
+
+                                </td>
+
+
+                                <!-- STUDENTS -->
+                                <td>
+
+                                    <span class="fw-semibold">
+                                        @(department.Students?.Count ?? 0)
+                                    </span>
+
+                                </td>
+
+
+                                <!-- STATUS -->
+                                <td>
+
+                                    @if (department.Status == "Active")
+                                    {
+                                        <span class="badge bg-success-subtle text-success">
+
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Active
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary-subtle text-secondary">
+
+                                            <i class="bi bi-dash-circle me-1"></i>
+                                            @department.Status
+
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- ACTIONS -->
+                                <td>
+
+                                    <div class="d-flex justify-content-center gap-1">
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@department.DepartmentId"
+                                           class="btn btn-sm btn-outline-primary"
+                                           title="View Details">
+
+                                            <i class="bi bi-eye"></i>
+
+                                        </a>
+
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@department.DepartmentId"
+                                           class="btn btn-sm btn-outline-secondary"
+                                           title="Edit Department">
+
+                                            <i class="bi bi-pencil"></i>
+
+                                        </a>
+
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@department.DepartmentId"
+                                           class="btn btn-sm btn-outline-danger"
+                                           title="Delete Department">
+
+                                            <i class="bi bi-trash"></i>
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+
+                <i class="bi bi-building"
+                   style="font-size:4rem;color:#adb5bd;"></i>
+
+                <h4 class="fw-bold mt-3">
+                    No Departments Found
+                </h4>
+
+                <p class="text-muted">
+                    Start by adding your first department.
+                </p>
+
+                <a asp-action="Create"
+                   class="btn btn-primary">
+
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Add Department
+
+                </a>
+
+            </div>
+        }
+
+    </div>
+
+</div>

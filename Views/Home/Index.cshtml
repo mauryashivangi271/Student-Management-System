@@ -1,0 +1,194 @@
+@model IEnumerable<StudentManagementSystem.Models.Student>
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var recentStudents =
+        ViewBag.RecentStudents as IEnumerable<StudentManagementSystem.Models.Student>
+        ?? Enumerable.Empty<StudentManagementSystem.Models.Student>();
+}
+
+<div class="dashboard-page">
+
+    <!-- Page Header -->
+    <div class="dashboard-header">
+        <div>
+            <h1>Dashboard</h1>
+            <p>Welcome to the Student Management System</p>
+        </div>
+
+        <a asp-controller="Student"
+           asp-action="Create"
+           class="btn btn-primary">
+            <i class="bi bi-person-plus me-2"></i>
+            Add Student
+        </a>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-4">
+
+        <!-- Students -->
+        <div class="col-xl-4 col-md-6">
+            <div class="dashboard-card">
+                <div class="card-icon students-icon">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+
+                <div class="card-content">
+                    <span>Total Students</span>
+                    <h2>@ViewBag.TotalStudents</h2>
+                    <small>
+                        <i class="bi bi-arrow-up"></i>
+                        Registered students
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Courses -->
+        <div class="col-xl-4 col-md-6">
+            <div class="dashboard-card">
+                <div class="card-icon courses-icon">
+                    <i class="bi bi-book-fill"></i>
+                </div>
+
+                <div class="card-content">
+                    <span>Total Courses</span>
+                    <h2>@ViewBag.TotalCourses</h2>
+                    <small>
+                        <i class="bi bi-journal-check"></i>
+                        Available courses
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Departments -->
+        <div class="col-xl-4 col-md-6">
+            <div class="dashboard-card">
+                <div class="card-icon departments-icon">
+                    <i class="bi bi-building-fill"></i>
+                </div>
+
+                <div class="card-content">
+                    <span>Total Departments</span>
+                    <h2>@ViewBag.TotalDepartments</h2>
+                    <small>
+                        <i class="bi bi-diagram-3"></i>
+                        Active departments
+                    </small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Recent Students -->
+    <div class="dashboard-section">
+
+        <div class="section-header">
+            <div>
+                <h3>Recent Students</h3>
+                <p>Recently added students</p>
+            </div>
+
+            <a asp-controller="Student"
+               asp-action="Index"
+               class="view-all">
+                View All
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        @if (recentStudents.Any())
+        {
+            <div class="table-responsive">
+
+                <table class="table dashboard-table">
+
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Email</th>
+                            <th>Course</th>
+                            <th>Department</th>
+                            <th>Enrollment Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var student in recentStudents)
+                        {
+                            <tr>
+
+                                <td>
+                                    <div class="student-info">
+
+                                        <div class="student-avatar">
+                                            @student.Name.Substring(0, 1).ToUpper()
+                                        </div>
+
+                                        <strong>
+                                            @student.Name
+                                        </strong>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @student.Email
+                                </td>
+
+                                <td>
+                                    @(student.Course?.CourseName ?? "N/A")
+                                </td>
+
+                                <td>
+                                    @(student.Department?.DepartmentName ?? "N/A")
+                                </td>
+
+                                <td>
+                                    @student.EnrollmentDate.ToString("dd MMM yyyy")
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+
+                <h4>No Students Yet</h4>
+
+                <p>
+                    Start by adding your first student.
+                </p>
+
+                <a asp-controller="Student"
+                   asp-action="Create"
+                   class="btn btn-primary">
+
+                    <i class="bi bi-person-plus me-2"></i>
+                    Add First Student
+
+                </a>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+

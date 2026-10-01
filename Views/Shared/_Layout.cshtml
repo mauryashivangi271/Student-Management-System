@@ -1,0 +1,362 @@
+@{
+    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+
+    var isLoggedIn = User.Identity?.IsAuthenticated == true;
+    var userName = User.Identity?.Name ?? "Administrator";
+
+    var firstLetter = !string.IsNullOrWhiteSpace(userName)
+        ? userName.Substring(0, 1).ToUpper()
+        : "A";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Student Management System</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/dashboard.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/student.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+
+    <div class="app-wrapper">
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-brand">
+
+                <div class="brand-logo">
+                    S
+                </div>
+
+                <div>
+                    <h5>StudentMS</h5>
+                    <small>Management System</small>
+                </div>
+
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <div class="nav-heading">
+                    MAIN MENU
+                </div>
+
+                @if (isLoggedIn)
+                {
+                    <!-- Dashboard -->
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       class="nav-item @(currentController == "Home" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            <i class="bi bi-speedometer2"></i>
+                        </span>
+
+                        <span>Dashboard</span>
+
+                    </a>
+
+                    <!-- Students -->
+                    <a asp-controller="Student"
+                       asp-action="Index"
+                       class="nav-item @(currentController == "Student" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            <i class="bi bi-people-fill"></i>
+                        </span>
+
+                        <span>Students</span>
+
+                    </a>
+
+                    <!-- Courses -->
+                    <a asp-controller="Course"
+                       asp-action="Index"
+                       class="nav-item @(currentController == "Course" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            <i class="bi bi-book-fill"></i>
+                        </span>
+
+                        <span>Courses</span>
+
+                    </a>
+
+                    <!-- Departments -->
+                    <a asp-controller="Department"
+                       asp-action="Index"
+                       class="nav-item @(currentController == "Department" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            <i class="bi bi-building-fill"></i>
+                        </span>
+
+                        <span>Departments</span>
+
+                    </a>
+                }
+
+                <div class="nav-heading mt-4">
+                    ACCOUNT
+                </div>
+
+                @if (isLoggedIn)
+                {
+                    <!-- Logout -->
+                    <form asp-controller="Account"
+                          asp-action="Logout"
+                          method="post"
+                          class="logout-form">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="nav-item logout-button">
+
+                            <span class="nav-icon">
+                                <i class="bi bi-box-arrow-right"></i>
+                            </span>
+
+                            <span>Logout</span>
+
+                        </button>
+
+                    </form>
+                }
+                else
+                {
+                    <!-- Login -->
+                    <a asp-controller="Account"
+                       asp-action="Login"
+                       class="nav-item @(currentController == "Account" ? "active" : "")">
+
+                        <span class="nav-icon">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                        </span>
+
+                        <span>Login</span>
+
+                    </a>
+
+                    <!-- Register -->
+                    <a asp-controller="Account"
+                       asp-action="Register"
+                       class="nav-item">
+
+                        <span class="nav-icon">
+                            <i class="bi bi-person-plus-fill"></i>
+                        </span>
+
+                        <span>Register</span>
+
+                    </a>
+                }
+
+            </nav>
+
+            <div class="sidebar-footer">
+
+                <div class="system-status">
+
+                    <span class="status-dot"></span>
+
+                    <span>System Active</span>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ================= MAIN AREA ================= -->
+
+        <div class="main-area">
+
+
+            <!-- ================= TOP NAVBAR ================= -->
+
+            <header class="top-navbar">
+
+                <div>
+
+                    <button class="menu-button"
+                            type="button"
+                            aria-label="Toggle menu">
+
+                        <i class="bi bi-list"></i>
+
+                    </button>
+
+                </div>
+
+
+                <div class="navbar-right">
+
+                    @if (isLoggedIn)
+                    {
+                        <div class="user-profile">
+
+                            <div class="user-avatar">
+                                @firstLetter
+                            </div>
+
+                            <div class="user-info">
+
+                                <strong>@userName</strong>
+
+                                <small>
+                                    Administrator
+                                </small>
+
+                            </div>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="user-profile">
+
+                            <div class="user-avatar">
+                                G
+                            </div>
+
+                            <div class="user-info">
+
+                                <strong>
+                                    Guest
+                                </strong>
+
+                                <small>
+                                    Please Sign In
+                                </small>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </header>
+
+
+            <!-- ================= PAGE CONTENT ================= -->
+
+            <main class="content-area">
+
+
+                <!-- SUCCESS MESSAGE -->
+
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show shadow-sm mx-3 mt-3"
+                         role="alert">
+
+                        <i class="bi bi-check-circle-fill me-2"></i>
+
+                        @TempData["Success"]
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close">
+                        </button>
+
+                    </div>
+                }
+
+
+                <!-- ERROR MESSAGE -->
+
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show shadow-sm mx-3 mt-3"
+                         role="alert">
+
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                        @TempData["Error"]
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close">
+                        </button>
+
+                    </div>
+                }
+
+
+                @RenderBody()
+
+            </main>
+
+
+            <!-- ================= FOOTER ================= -->
+
+            <footer class="app-footer">
+
+                <span>
+                    © @DateTime.Now.Year Student Management System
+                </span>
+
+                <span>
+                    ASP.NET Core MVC
+                </span>
+
+            </footer>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true">
+    </script>
+
+    <script src="~/js/dashboard.js"
+            asp-append-version="true">
+    </script>
+
+    <script src="~/js/student.js"
+            asp-append-version="true">
+    </script>
+
+
+    @await RenderSectionAsync(
+        "Scripts",
+        required: false)
+
+</body>
+</html>

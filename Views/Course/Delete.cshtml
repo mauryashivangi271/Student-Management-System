@@ -1,0 +1,100 @@
+@model StudentManagementSystem.Models.Course
+
+@{
+    ViewData["Title"] = "Delete Course";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Delete Course</h1>
+        <p>Review the course information before deleting it.</p>
+    </div>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        ← Back to Courses
+    </a>
+</div>
+
+<div class="student-card">
+
+    <div class="student-card-header">
+        <div>
+            <h4>Delete Confirmation</h4>
+            <span>This action cannot be undone.</span>
+        </div>
+
+        <span class="badge bg-danger">
+            Delete
+        </span>
+    </div>
+
+    <div class="p-4">
+
+        <div class="alert alert-warning">
+            <strong>Are you sure?</strong>
+            You are about to permanently delete this course.
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-4">
+                <label class="text-muted">
+                    Course Name
+                </label>
+
+                <h5>
+                    @Model.CourseName
+                </h5>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <label class="text-muted">
+                    Course Code
+                </label>
+
+                <h5>
+                    @Model.CourseCode
+                </h5>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <label class="text-muted">
+                    Duration
+                </label>
+
+                <h5>
+                    @(Model.Duration ?? "Not specified")
+                </h5>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <label class="text-muted">
+                    Status
+                </label>
+
+                <h5>
+                    @Model.Status
+                </h5>
+            </div>
+
+        </div>
+
+        <form asp-action="Delete" method="post">
+
+            <input type="hidden" asp-for="CourseId" />
+
+            <button type="submit"
+                    class="btn btn-danger">
+                Delete Course
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary ms-2">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>

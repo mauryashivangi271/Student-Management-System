@@ -1,0 +1,201 @@
+@model StudentManagementSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Delete Student";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold mb-1">
+                <i class="bi bi-trash3-fill me-2 text-danger"></i>
+                Delete Student
+            </h1>
+
+            <p class="text-muted mb-0">
+                Review the information before permanently deleting this student.
+            </p>
+        </div>
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Students
+
+        </a>
+
+    </div>
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+
+                    <!-- WARNING -->
+
+                    <div class="alert alert-danger d-flex align-items-start mb-4">
+
+                        <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+
+                        <div>
+
+                            <strong>
+                                Are you sure you want to delete this student?
+                            </strong>
+
+                            <p class="mb-0 mt-1">
+                                This action cannot be undone.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STUDENT PROFILE -->
+
+                    <div class="text-center mb-4">
+
+                        <div class="rounded-circle bg-danger-subtle text-danger d-flex align-items-center justify-content-center mx-auto mb-3"
+                             style="width:80px;height:80px;font-size:28px;font-weight:700;">
+
+                            @(string.IsNullOrWhiteSpace(Model.Name)
+                                ? "?"
+                                : Model.Name.Substring(0, 1).ToUpper())
+
+                        </div>
+
+                        <h3 class="fw-bold mb-1">
+                            @Model.Name
+                        </h3>
+
+                        <p class="text-muted mb-0">
+                            Student #@Model.StudentId
+                        </p>
+
+                    </div>
+
+
+                    <!-- DETAILS -->
+
+                    <div class="row g-3 mb-4">
+
+                        <div class="col-md-6">
+
+                            <div class="border rounded-3 p-3">
+
+                                <small class="text-muted d-block">
+                                    Email
+                                </small>
+
+                                <strong>
+                                    @Model.Email
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="border rounded-3 p-3">
+
+                                <small class="text-muted d-block">
+                                    Phone
+                                </small>
+
+                                <strong>
+                                    @Model.Phone
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="border rounded-3 p-3">
+
+                                <small class="text-muted d-block">
+                                    Course
+                                </small>
+
+                                <strong>
+                                    @(Model.Course?.CourseName ?? "Not assigned")
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="border rounded-3 p-3">
+
+                                <small class="text-muted d-block">
+                                    Department
+                                </small>
+
+                                <strong>
+                                    @(Model.Department?.DepartmentName ?? "Not assigned")
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+
+                    <form asp-action="Delete"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               asp-for="StudentId" />
+
+                        <div class="d-flex justify-content-center gap-2">
+
+                            <a asp-action="Index"
+                               class="btn btn-light border px-4">
+
+                                <i class="bi bi-x-circle me-2"></i>
+                                Cancel
+
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-danger px-4">
+
+                                <i class="bi bi-trash3 me-2"></i>
+                                Delete Student
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
